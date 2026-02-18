@@ -28,6 +28,11 @@ The system refuses generation when:
 
 This prevents “confident-sounding” answers when the PDF does not support the question.
 
+📓 Notebook: [SmartCampus_Agentic_RAG.ipynb](SmartCampus_Agentic_RAG.ipynb)
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Priyansha70/smartcampus-agentic-rag/blob/main/SmartCampus_Agentic_RAG.ipynb)
+
+
 ## Demo (Screenshots)
 
 ### High-confidence QA
