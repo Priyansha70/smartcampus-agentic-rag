@@ -1,84 +1,60 @@
+# SmartCampus Agentic RAG
+Evidence-grounded PDF Q&A with a hallucination guard (RAG + refusal logic).
 
-### 2️⃣ Keyword Coverage
-Measures overlap between query keywords and retrieved context.
+## Overview
+This project is an agentic Retrieval-Augmented Generation (RAG) assistant that answers questions, produces summaries, and generates quizzes from uploaded PDFs. It is designed to reduce hallucinations by grounding responses in retrieved evidence and refusing unsupported requests.
 
-### Refusal Behavior
-If:
-- Confidence < threshold OR
-- Keyword coverage < threshold
+## Architecture
+**User Query**
+→ **Vector Retrieval (FAISS)**
+→ **Top-k Chunks**
+→ **Hallucination Guard**
+- Retrieval confidence (distance-based proxy)
+- Keyword coverage (query ↔ context overlap)
+- Refusal logic (when evidence is weak)
+→ **Context-constrained LLM**
+→ **QA / Summary / Quiz output (+ citations/pages in outputs)**
 
-The system refuses generation and suggests rephrasing.
+## Hallucination Guard
+The system refuses generation when:
+- retrieval confidence is below a threshold **OR**
+- keyword coverage is below a threshold
 
-This prevents unsupported answers when the document lacks relevant information.
+This prevents “confident-sounding” answers when the PDF does not support the question.
 
----
+## Demo (Screenshots)
 
-## 📸 Demo
-
-### High-Confidence QA
+### High-confidence QA
 ![QA Example](screenshots/qa_example.png)
 
----
-
-### Refusal Case (Low Coverage)
+### Refusal case (low coverage / unsupported)
 ![Refusal Example](screenshots/refusal_example.png)
 
----
-
-### Quiz Generation Mode
+### Quiz generation mode
 ![Quiz Example](screenshots/quiz_example.png)
 
----
-
-## 🛠 Tech Stack
-
-- Python
+## Tech Stack
+- Python (Google Colab)
 - LangChain
-- FAISS (Vector Store)
-- OpenAI Embeddings
-- OpenAI Chat Model
-- Google Colab
+- FAISS
+- OpenAI embeddings + chat model
 
----
+## How to Run (Colab)
+1. Open the notebook: `SmartCampus_Agentic_RAG.ipynb`
+2. Install dependencies
+3. Set your `OPENAI_API_KEY` at runtime (key is not stored)
+4. Upload a PDF
+5. Run queries in QA / summary / quiz modes
 
-## ⚙️ Features
+## Example Queries
+- “What JUnit 5 dependencies do I add and where?”
+- “Summarize what Lab 6 requires.”
+- “Make a quiz on CityListTest requirements.”
+- “What neural network architecture should I use?” → should refuse (unsupported)
 
-- Multi-mode agent routing (QA / Summary / Quiz)
-- Strict citation enforcement (page-level)
-- Context-only answering
-- Evidence preview from top retrieved chunks
-- Confidence and coverage diagnostics
+## Security
+API keys are never committed. The notebook uses runtime key entry (e.g., `getpass()`).
 
----
-
-## 📌 Example Queries
-
-- "What JUnit 5 dependencies do I add and where?"
-- "Summarize what Lab 6 requires."
-- "Make a quiz on CityListTest requirements."
-- "What neural network architecture should I use?" → triggers refusal
-
----
-
-## 🔐 Security
-
-API keys are never stored in the notebook.
-Keys are provided at runtime using `getpass()`.
-
----
-
-## 📈 Why This Matters
-
-Large Language Models frequently hallucinate when context is insufficient.
-
-This project demonstrates:
-
-- Retrieval-grounded generation
-- Guard-based refusal logic
-- Practical mitigation of hallucination risks
-- Production-oriented LLM system design
-
----
-
-## 📂 Project Structure
+## Author
+Priyansha Aggarwal — University of Alberta (CS + Math), graduating April 2026.
 
