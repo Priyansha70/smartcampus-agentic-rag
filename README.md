@@ -1,71 +1,65 @@
-# SmartCampus Agentic RAG
-Evidence-grounded PDF Q&A with a hallucination guard (RAG + refusal logic).
+# 🚀 SmartCampus Agentic RAG
 
-## Overview
-This project is an agentic Retrieval-Augmented Generation (RAG) assistant that answers questions, produces summaries, and generates quizzes from uploaded PDFs. It is designed to reduce hallucinations by grounding responses in retrieved evidence and refusing unsupported requests.
+A production-style Retrieval-Augmented Generation (RAG) system with guardrails, refusal logic, and API deployment.
 
-## Key Results
-- Page-cited answers grounded in retrieved evidence
-- Hallucination guard (confidence + keyword coverage)
-- Refusal behavior on unsupported questions
+This project transforms a basic notebook RAG implementation into a deployable AI service using FastAPI, retrieval confidence scoring, keyword coverage validation, and hallucination prevention.
 
+---
 
-## Architecture
-**User Query**
-→ **Vector Retrieval (FAISS)**
-→ **Top-k Chunks**
-→ **Hallucination Guard**
-- Retrieval confidence (distance-based proxy)
-- Keyword coverage (query ↔ context overlap)
-- Refusal logic (when evidence is weak)
-→ **Context-constrained LLM**
-→ **QA / Summary / Quiz output (+ citations/pages in outputs)**
+## 🔥 Key Features
 
-## Hallucination Guard
-The system refuses generation when:
-- retrieval confidence is below a threshold **OR**
-- keyword coverage is below a threshold
+- ✅ FastAPI backend for real API deployment  
+- ✅ Swagger auto-generated API documentation  
+- ✅ FAISS vector search for semantic retrieval  
+- ✅ Embedding caching (prevents re-indexing repeated PDFs)  
+- ✅ Retrieval confidence scoring  
+- ✅ Keyword coverage validation  
+- ✅ Hallucination refusal logic  
+- ✅ Retry + fallback mechanism  
+- ✅ Environment-based configuration  
+- ✅ Production-ready project structure  
 
-This prevents “confident-sounding” answers when the PDF does not support the question.
+---
 
-📓 Notebook: [SmartCampus_Agentic_RAG.ipynb](SmartCampus_Agentic_RAG.ipynb)
+## 🧠 Problem Statement
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Priyansha70/smartcampus-agentic-rag/blob/main/SmartCampus_Agentic_RAG.ipynb)
+Large Language Models can hallucinate when asked questions not supported by context.
 
+This system enforces:
 
-## Demo (Screenshots)
+1. Retrieval grounding
+2. Confidence scoring
+3. Keyword coverage validation
+4. Strict page-based citation enforcement
+5. Automatic refusal when unsafe
 
-### High-confidence QA
-![QA Example](screenshots/qa_example.png)
+Result:  
+A safer, more production-ready RAG architecture.
 
-### Refusal case (low coverage / unsupported)
-![Refusal Example](screenshots/refusal_example.png)
+---
 
-### Quiz generation mode
-![Quiz Example](screenshots/quiz_example.png)
+## 🏗 System Architecture
 
-## Tech Stack
-- Python (Google Colab)
-- LangChain
-- FAISS
-- OpenAI embeddings + chat model
+1. User uploads PDF
+2. PDF is chunked via `RecursiveCharacterTextSplitter`
+3. Chunks are embedded using OpenAI embeddings
+4. FAISS performs semantic similarity search
+5. Guard layer computes:
+   - Retrieval confidence
+   - Keyword coverage
+6. If safe → LLM answers using ONLY retrieved context
+7. If unsafe → system refuses with explanation
 
-## How to Run (Colab)
-1. Open the notebook: `SmartCampus_Agentic_RAG.ipynb`
-2. Install dependencies
-3. Set your `OPENAI_API_KEY` at runtime (key is not stored)
-4. Upload a PDF
-5. Run queries in QA / summary / quiz modes
+---
 
-## Example Queries
-- “What JUnit 5 dependencies do I add and where?”
-- “Summarize what Lab 6 requires.”
-- “Make a quiz on CityListTest requirements.”
-- “What neural network architecture should I use?” → should refuse (unsupported)
+## 🛡 Guard Layer
 
-## Security
-API keys are never committed. The notebook uses runtime key entry (e.g., `getpass()`).
+The guard prevents hallucination using:
 
-## Author
-Priyansha Aggarwal — University of Alberta (CS + Math), graduating April 2026.
+- Top-K retrieval confidence scoring
+- Keyword overlap validation
+- Page-level citation enforcement
+- Strict refusal thresholding
+
+Example refusal:
 
