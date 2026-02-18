@@ -4,6 +4,12 @@ Evidence-grounded PDF Q&A with a hallucination guard (RAG + refusal logic).
 ## Overview
 This project is an agentic Retrieval-Augmented Generation (RAG) assistant that answers questions, produces summaries, and generates quizzes from uploaded PDFs. It is designed to reduce hallucinations by grounding responses in retrieved evidence and refusing unsupported requests.
 
+## Key Results
+- Page-cited answers grounded in retrieved evidence
+- Hallucination guard (confidence + keyword coverage)
+- Refusal behavior on unsupported questions
+
+
 ## Architecture
 **User Query**
 → **Vector Retrieval (FAISS)**
